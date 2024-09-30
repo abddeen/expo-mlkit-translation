@@ -2,6 +2,8 @@ package expo.modules.mlkittranslation
 
 import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
+import expo.modules.kotlin.records.Field
+import expo.modules.kotlin.records.Record
 
 class ExpoMlkitTranslationModule : Module() {
   // Each module class must implement the definition function. The definition consists of components
@@ -29,8 +31,13 @@ class ExpoMlkitTranslationModule : Module() {
     }
   }
 }
-data class PrepareOptions(
-  val source: String = "utf8",
-  val target: String = "utf8",
-  val downloadIfNeeded: Boolean = false
-)
+ class PrepareOptions : Record {
+   @Field
+   val source: String = "utf8"
+
+   @Field
+   val target: String = "utf8"
+
+   @Field
+   val downloadIfNeeded: Boolean = false
+ }
