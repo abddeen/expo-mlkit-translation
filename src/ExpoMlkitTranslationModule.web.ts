@@ -1,13 +1,24 @@
-import { EventEmitter } from 'expo-modules-core';
+import { EventEmitter } from "expo-modules-core";
+
+import {
+  ExpoMlkitTranslationModuleType,
+  PrepareOptions,
+} from "./ExpoMlkitTranslation.types";
 
 const emitter = new EventEmitter({} as any);
 
-export default {
-  PI: Math.PI,
+const ExpoMlkitTranslationWebModule: ExpoMlkitTranslationModuleType = {
   async setValueAsync(value: string): Promise<void> {
-    emitter.emit('onChange', { value });
+    emitter.emit("onChange", { value });
   },
-  hello() {
-    return 'Hello world! 👋';
+  addListener() {},
+  removeListeners() {},
+  async translate(text: string) {
+    return "Hello Web! 👋";
+  },
+  async prepare(options: PrepareOptions) {
+    return "Prepared";
   },
 };
+
+export { ExpoMlkitTranslationWebModule };

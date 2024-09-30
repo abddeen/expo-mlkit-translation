@@ -1,6 +1,7 @@
 import ExpoModulesCore
+import MLKitTranslate
 
-public class ExpoMlkitTranslationModule: Module {
+public class ExpoMlkitModule: Module {
   // Each module class must implement the definition function. The definition consists of components
   // that describes the module's functionality and behavior.
   // See https://docs.expo.dev/modules/module-api for more details about available components.
@@ -10,17 +11,21 @@ public class ExpoMlkitTranslationModule: Module {
     // The module will be accessible from `requireNativeModule('ExpoMlkitTranslation')` in JavaScript.
     Name("ExpoMlkitTranslation")
 
-    // Sets constant properties on the module. Can take a dictionary or a closure that returns a dictionary.
-    Constants([
-      "PI": Double.pi
-    ])
-
     // Defines event names that the module can send to JavaScript.
     Events("onChange")
 
     // Defines a JavaScript synchronous function that runs the native code on the JavaScript thread.
-    Function("hello") {
+    AsyncFunction("translate") {  (text: String) in
+    // TODO translate
       return "Hello world! 👋"
+    }
+
+    AsyncFunction("prepare") { (options: PrepareOptions) in
+      // TODO prepare
+        // Create an English-German translator:
+        let options = TranslatorOptions(sourceLanguage: .english, targetLanguage: .german)
+        let englishGermanTranslator = Translator.translator(options: options)
+      return "Prepared"
     }
 
     // Defines a JavaScript function that always returns a Promise and whose native code
@@ -31,14 +36,14 @@ public class ExpoMlkitTranslationModule: Module {
         "value": value
       ])
     }
-
-    // Enables the module to be used as a native view. Definition components that are accepted as part of the
-    // view definition: Prop, Events.
-    View(ExpoMlkitTranslationView.self) {
-      // Defines a setter for the `name` prop.
-      Prop("name") { (view: ExpoMlkitTranslationView, prop: String) in
-        print(prop)
-      }
-    }
   }
+}
+
+struct PrepareOptions: Record {
+  @Field
+  var source: String
+  @Field
+  var target: String
+  @Field
+  var downloadIfNeeded: Bool
 }
