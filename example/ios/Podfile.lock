@@ -15,6 +15,7 @@ PODS:
     - ExpoModulesCore
   - ExpoMlkitTranslation (0.1.0):
     - ExpoModulesCore
+    - GoogleMLKit/Translate (= 3.2.0)
   - ExpoModulesCore (1.12.24):
     - DoubleConversion
     - glog
@@ -41,9 +42,72 @@ PODS:
   - FBLazyVector (0.74.5)
   - fmt (9.1.0)
   - glog (0.3.5)
+  - GoogleDataTransport (9.4.1):
+    - GoogleUtilities/Environment (~> 7.7)
+    - nanopb (< 2.30911.0, >= 2.30908.0)
+    - PromisesObjC (< 3.0, >= 1.2)
+  - GoogleMLKit/MLKitCore (3.2.0):
+    - MLKitCommon (~> 8.0.0)
+  - GoogleMLKit/Translate (3.2.0):
+    - GoogleMLKit/MLKitCore
+    - MLKitTranslate (~> 2.2.0)
+  - GoogleToolboxForMac/DebugUtils (2.3.2):
+    - GoogleToolboxForMac/Defines (= 2.3.2)
+  - GoogleToolboxForMac/Defines (2.3.2)
+  - GoogleToolboxForMac/Logger (2.3.2):
+    - GoogleToolboxForMac/Defines (= 2.3.2)
+  - "GoogleToolboxForMac/NSData+zlib (2.3.2)":
+    - GoogleToolboxForMac/Defines (= 2.3.2)
+  - "GoogleToolboxForMac/NSDictionary+URLArguments (2.3.2)":
+    - GoogleToolboxForMac/DebugUtils (= 2.3.2)
+    - GoogleToolboxForMac/Defines (= 2.3.2)
+    - "GoogleToolboxForMac/NSString+URLArguments (= 2.3.2)"
+  - "GoogleToolboxForMac/NSString+URLArguments (2.3.2)"
+  - GoogleToolboxForMac/StringEncoding (2.3.2):
+    - GoogleToolboxForMac/Defines (= 2.3.2)
+  - GoogleUtilities/Environment (7.13.3):
+    - GoogleUtilities/Privacy
+    - PromisesObjC (< 3.0, >= 1.2)
+  - GoogleUtilities/Logger (7.13.3):
+    - GoogleUtilities/Environment
+    - GoogleUtilities/Privacy
+  - GoogleUtilities/Privacy (7.13.3)
+  - GoogleUtilities/UserDefaults (7.13.3):
+    - GoogleUtilities/Logger
+    - GoogleUtilities/Privacy
+  - GoogleUtilitiesComponents (1.1.0):
+    - GoogleUtilities/Logger
+  - GTMSessionFetcher/Core (1.7.2)
   - hermes-engine (0.74.5):
     - hermes-engine/Pre-built (= 0.74.5)
   - hermes-engine/Pre-built (0.74.5)
+  - MLKitCommon (8.0.0):
+    - GoogleDataTransport (~> 9.0)
+    - GoogleToolboxForMac/Logger (~> 2.1)
+    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
+    - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
+    - GoogleUtilities/UserDefaults (~> 7.0)
+    - GoogleUtilitiesComponents (~> 1.0)
+    - GTMSessionFetcher/Core (~> 1.1)
+    - Protobuf (~> 3.12)
+  - MLKitNaturalLanguage (4.2.0):
+    - GoogleToolboxForMac/Logger (~> 2.1)
+    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
+    - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
+    - GoogleToolboxForMac/StringEncoding (~> 2.1)
+    - GTMSessionFetcher/Core (~> 1.1)
+    - MLKitCommon (~> 8.0)
+    - Protobuf (~> 3.12)
+  - MLKitTranslate (2.2.0):
+    - MLKitNaturalLanguage (~> 4.2)
+    - SSZipArchive (~> 2.1)
+  - nanopb (2.30910.0):
+    - nanopb/decode (= 2.30910.0)
+    - nanopb/encode (= 2.30910.0)
+  - nanopb/decode (2.30910.0)
+  - nanopb/encode (2.30910.0)
+  - PromisesObjC (2.4.0)
+  - Protobuf (3.28.2)
   - RCT-Folly (2024.01.01.00):
     - boost
     - DoubleConversion
@@ -1202,6 +1266,7 @@ PODS:
     - React-perflogger (= 0.74.5)
     - React-utils (= 0.74.5)
   - SocketRocket (0.7.0)
+  - SSZipArchive (2.4.3)
   - Yoga (0.0.0)
 
 DEPENDENCIES:
@@ -1272,7 +1337,20 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - GoogleDataTransport
+    - GoogleMLKit
+    - GoogleToolboxForMac
+    - GoogleUtilities
+    - GoogleUtilitiesComponents
+    - GTMSessionFetcher
+    - MLKitCommon
+    - MLKitNaturalLanguage
+    - MLKitTranslate
+    - nanopb
+    - PromisesObjC
+    - Protobuf
     - SocketRocket
+    - SSZipArchive
 
 EXTERNAL SOURCES:
   boost:
@@ -1410,12 +1488,24 @@ SPEC CHECKSUMS:
   ExpoFileSystem: 80bfe850b1f9922c16905822ecbf97acd711dc51
   ExpoFont: 00756e6c796d8f7ee8d211e29c8b619e75cbf238
   ExpoKeepAwake: 3b8815d9dd1d419ee474df004021c69fdd316d08
-  ExpoMlkitTranslation: 6c5691dbf6b1261376f245788fd243d18eb3012b
+  ExpoMlkitTranslation: bfdb0011f8c0f8d198d1332be545b74826dd7803
   ExpoModulesCore: f30a203ff1863bab3dd9f4421e7fc1564797f18a
   FBLazyVector: ac12dc084d1c8ec4cc4d7b3cf1b0ebda6dab85af
   fmt: 4c2741a687cc09f0634a2e2c72a838b99f1ff120
   glog: fdfdfe5479092de0c4bdbebedd9056951f092c4f
+  GoogleDataTransport: 6c09b596d841063d76d4288cc2d2f42cc36e1e2a
+  GoogleMLKit: 0017a6a8372e1a182139b9def4d89be5d87ca5a7
+  GoogleToolboxForMac: 8bef7c7c5cf7291c687cf5354f39f9db6399ad34
+  GoogleUtilities: ea963c370a38a8069cc5f7ba4ca849a60b6d7d15
+  GoogleUtilitiesComponents: 679b2c881db3b615a2777504623df6122dd20afe
+  GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
   hermes-engine: 8c1577f3fdb849cbe7729c2e7b5abc4b845e88f8
+  MLKitCommon: f6da6c5659618c070b50a80db01248ebe2964175
+  MLKitNaturalLanguage: 3350ebe7436046cd3146b8df9a2e06d6ba7a6439
+  MLKitTranslate: e2998053668911b4de2cebe5ce072fd035189686
+  nanopb: 438bc412db1928dac798aa6fd75726007be04262
+  PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
+  Protobuf: 28c89b24435762f60244e691544ed80f50d82701
   RCT-Folly: 02617c592a293bd6d418e0a88ff4ee1f88329b47
   RCTDeprecation: 3afceddffa65aee666dafd6f0116f1d975db1584
   RCTRequired: ec1239bc9d8bf63e10fb92bd8b26171a9258e0c1
@@ -1464,6 +1554,7 @@ SPEC CHECKSUMS:
   React-utils: f242eb7e7889419d979ca0e1c02ccc0ea6e43b29
   ReactCommon: f7da14a8827b72704169a48c929bcde802698361
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
+  SSZipArchive: fe6a26b2a54d5a0890f2567b5cc6de5caa600aef
   Yoga: 950bbfd7e6f04790fdb51149ed51df41f329fcc8
 
 PODFILE CHECKSUM: 2f87bc0b043e0585f06d2c924b0f7bd44a6f3d07

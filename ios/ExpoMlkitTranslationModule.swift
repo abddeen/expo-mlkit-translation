@@ -1,7 +1,7 @@
 import ExpoModulesCore
 import MLKitTranslate
 
-public class ExpoMlkitModule: Module {
+public class ExpoMlkitTranslationModule: Module {
   // Each module class must implement the definition function. The definition consists of components
   // that describes the module's functionality and behavior.
   // See https://docs.expo.dev/modules/module-api for more details about available components.
@@ -22,9 +22,6 @@ public class ExpoMlkitModule: Module {
 
     AsyncFunction("prepare") { (options: PrepareOptions) in
       // TODO prepare
-        // Create an English-German translator:
-        let options = TranslatorOptions(sourceLanguage: .english, targetLanguage: .german)
-        let englishGermanTranslator = Translator.translator(options: options)
       return "Prepared"
     }
 

@@ -1,11 +1,30 @@
-import { StyleSheet, Text, View } from 'react-native';
-
-import * as ExpoMlkitTranslation from 'expo-mlkit-translation';
+import { ExpoMlkitTranslationModule } from "expo-mlkit-translation";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>{ExpoMlkitTranslation.hello()}</Text>
+      <TouchableOpacity
+        onPress={async () => {
+          const r = await ExpoMlkitTranslationModule.prepare({
+            source: "Arabic",
+            target: "English",
+            downloadIfNeeded: false,
+          });
+          console.log({ r });
+        }}
+      >
+        <Text>Prepare</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={async () => {
+          const r = await ExpoMlkitTranslationModule.translate("Hello");
+          console.log({ r });
+        }}
+      >
+        <Text>Translate</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -13,8 +32,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

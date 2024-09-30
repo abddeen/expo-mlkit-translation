@@ -6,10 +6,7 @@ import {
 
 // Import the native module. On web, it will be resolved to ExpoMlkitTranslation.web.ts
 // and on native platforms to ExpoMlkitTranslation.ts
-import {
-  ChangeEventPayload,
-  ExpoMlkitTranslationModuleType,
-} from "./ExpoMlkitTranslation.types";
+import { ChangeEventPayload } from "./ExpoMlkitTranslation.types";
 import ExpoMlkitTranslationModule from "./ExpoMlkitTranslationModule";
 
 export async function setValueAsync(value: string) {
@@ -26,4 +23,4 @@ export function addChangeListener(
   return emitter.addListener<ChangeEventPayload>("onChange", listener);
 }
 
-export { ExpoMlkitTranslationModuleType, ChangeEventPayload };
+export { ExpoMlkitTranslationModule, ChangeEventPayload };
