@@ -15,6 +15,7 @@ PODS:
     - ExpoModulesCore
   - ExpoMlkitTranslation (0.1.0):
     - ExpoModulesCore
+    - GoogleMLKit/LanguageID (= 3.2.0)
     - GoogleMLKit/Translate (= 3.2.0)
   - ExpoModulesCore (1.12.24):
     - DoubleConversion
@@ -46,6 +47,9 @@ PODS:
     - GoogleUtilities/Environment (~> 7.7)
     - nanopb (< 2.30911.0, >= 2.30908.0)
     - PromisesObjC (< 3.0, >= 1.2)
+  - GoogleMLKit/LanguageID (3.2.0):
+    - GoogleMLKit/MLKitCore
+    - MLKitLanguageID (~> 3.2.0)
   - GoogleMLKit/MLKitCore (3.2.0):
     - MLKitCommon (~> 8.0.0)
   - GoogleMLKit/Translate (3.2.0):
@@ -90,6 +94,8 @@ PODS:
     - GoogleUtilitiesComponents (~> 1.0)
     - GTMSessionFetcher/Core (~> 1.1)
     - Protobuf (~> 3.12)
+  - MLKitLanguageID (3.2.0):
+    - MLKitNaturalLanguage (~> 4.2)
   - MLKitNaturalLanguage (4.2.0):
     - GoogleToolboxForMac/Logger (~> 2.1)
     - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
@@ -1344,6 +1350,7 @@ SPEC REPOS:
     - GoogleUtilitiesComponents
     - GTMSessionFetcher
     - MLKitCommon
+    - MLKitLanguageID
     - MLKitNaturalLanguage
     - MLKitTranslate
     - nanopb
@@ -1488,7 +1495,7 @@ SPEC CHECKSUMS:
   ExpoFileSystem: 80bfe850b1f9922c16905822ecbf97acd711dc51
   ExpoFont: 00756e6c796d8f7ee8d211e29c8b619e75cbf238
   ExpoKeepAwake: 3b8815d9dd1d419ee474df004021c69fdd316d08
-  ExpoMlkitTranslation: bfdb0011f8c0f8d198d1332be545b74826dd7803
+  ExpoMlkitTranslation: 3af51decda1b5d402738e82d09400d42532eb286
   ExpoModulesCore: f30a203ff1863bab3dd9f4421e7fc1564797f18a
   FBLazyVector: ac12dc084d1c8ec4cc4d7b3cf1b0ebda6dab85af
   fmt: 4c2741a687cc09f0634a2e2c72a838b99f1ff120
@@ -1501,6 +1508,7 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
   hermes-engine: 8c1577f3fdb849cbe7729c2e7b5abc4b845e88f8
   MLKitCommon: f6da6c5659618c070b50a80db01248ebe2964175
+  MLKitLanguageID: 395b867dd9105709789c32b3bac8449cccd44332
   MLKitNaturalLanguage: 3350ebe7436046cd3146b8df9a2e06d6ba7a6439
   MLKitTranslate: e2998053668911b4de2cebe5ce072fd035189686
   nanopb: 438bc412db1928dac798aa6fd75726007be04262

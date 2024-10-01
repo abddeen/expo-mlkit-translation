@@ -1,5 +1,6 @@
 import ExpoModulesCore
 import MLKitTranslate
+import MLKitLanguageID
 
 public class ExpoMlkitTranslationModule: Module {
   // Each module class must implement the definition function. The definition consists of components
@@ -14,7 +15,19 @@ public class ExpoMlkitTranslationModule: Module {
     // Defines event names that the module can send to JavaScript.
     Events("onChange")
 
-    // Defines a JavaScript synchronous function that runs the native code on the JavaScript thread.
+    AsyncFunction("identifyLanguage") {  (text: String, promise: Promise) in
+      let languageId = LanguageIdentification.languageIdentification()
+
+      languageId.identifyLanguage(for: text) { (languageCode, error) in
+        if let error = error {
+            promise.reject(error)
+            print("Failed with error: \(error)")
+          return
+        }
+        promise.resolve(languageCode)
+      }
+    }
+      
     AsyncFunction("translate") {  (text: String) in
     // TODO translate
       return "Hello world! 👋"

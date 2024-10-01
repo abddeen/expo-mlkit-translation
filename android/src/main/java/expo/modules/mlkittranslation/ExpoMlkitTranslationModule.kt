@@ -18,6 +18,17 @@ class ExpoMlkitTranslationModule : Module() {
     // Defines event names that the module can send to JavaScript.
     Events("onChange")
 
+    AsyncFunction("identifyLanguage") { text: String, promise: Promise ->
+      val languageIdentifier = LanguageIdentification.getClient()
+      languageIdentifier.identifyLanguage(text)
+              .addOnSuccessListener { languageCode ->
+                promise.resolve(languageCode)
+              }
+              .addOnFailureListener {
+                  promise.reject(it)
+              }
+    }
+
     // Defines a JavaScript synchronous function that runs the native code on the JavaScript thread.
     AsyncFunction("translate") { text: String ->
       // TODO translate

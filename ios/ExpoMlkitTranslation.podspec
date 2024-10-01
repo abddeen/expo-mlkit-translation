@@ -17,6 +17,7 @@ Pod::Spec.new do |s|
 
   s.dependency 'ExpoModulesCore'
   s.dependency 'GoogleMLKit/Translate', '3.2.0'
+  s.dependency 'GoogleMLKit/LanguageID', '3.2.0'
 
   # Swift/Objective-C compatibility
   s.pod_target_xcconfig = {
