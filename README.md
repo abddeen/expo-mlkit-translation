@@ -2,34 +2,99 @@
 
 Wrapper for Google MLKit Translation
 
-# API documentation
+## Installation
 
-- [Documentation for the main branch](https://github.com/expo/expo/blob/main/docs/pages/versions/unversioned/sdk/mlkit-translation.md)
-- [Documentation for the latest stable release](https://docs.expo.dev/versions/latest/sdk/mlkit-translation/)
-
-# Installation in managed Expo projects
-
-For [managed](https://docs.expo.dev/archive/managed-vs-bare/) Expo projects, please follow the installation instructions in the [API documentation for the latest stable release](#api-documentation). If you follow the link and there is no documentation available then this library is not yet usable within managed projects &mdash; it is likely to be included in an upcoming Expo SDK release.
-
-# Installation in bare React Native projects
-
-For bare React Native projects, you must ensure that you have [installed and configured the `expo` package](https://docs.expo.dev/bare/installing-expo-modules/) before continuing.
-
-### Add the package to your npm dependencies
-
-```
-npm install expo-mlkit-translation
+```bash
+npx expo add expo-mlkit-translation
+npx expo prebuild --clean
+# Create a dev client
+npx expo run:ios
+npx expo run:android
 ```
 
-### Configure for iOS
+## Usage
 
-Run `npx pod-install` after installing the npm package.
+### Identify Language
 
+```tsx
+// returns a BCP-47 Code
+const identifiedLanguage =
+  await ExpoMlkitTranslationModule.identifyLanguage(text);
+```
 
-### Configure for Android
+### Check if model is downloaded
 
+```ts
+// returns a BCP-47 Code
+const hasModel = await ExpoMlkitTranslationModule.hasDownloadedModel(source);
+```
 
+### Translate
 
-# Contributing
+```tsx
+const text = "اهلا";
+const source = "ar";
+const target = "en";
+const translation = await ExpoMlkitTranslationModule.translate(
+  text,
+  source,
+  target
+);
+```
 
-Contributions are very welcome! Please refer to guidelines described in the [contributing guide]( https://github.com/expo/expo#contributing).
+### Full example
+
+```tsx
+export default function App() {
+  const [value, setValue] = useState("");
+  const [downloading, setDownloading] = useState(false);
+
+  const detectLanguage = async (text: string) => {
+    return await ExpoMlkitTranslationModule.identifyLanguage(text);
+  };
+  const translate = async (
+    text: string,
+    source: LanguageTagType,
+    target: LanguageTagType
+  ) => {
+    try {
+      const hasModel =
+        await ExpoMlkitTranslationModule.hasDownloadedModel(source);
+      if (!hasModel) {
+        setDownloading(true);
+      }
+      const translation = await ExpoMlkitTranslationModule.translate(
+        text,
+        source,
+        target
+      );
+      setDownloading(false);
+      Alert.alert("Translated", translation);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  return (
+    <View>
+      <View>
+        <TextInput value={value} onChangeText={setValue} />
+        <Button
+          title="Detect Language"
+          onPress={async () => {
+            const identifiedLanguage = await detectLanguage(value);
+            Alert.alert("Identified Language", identifiedLanguage || "null");
+          }}
+        />
+        <Button
+          title="Translate"
+          onPress={async () => {
+            const source = await detectLanguage(value);
+            translate(value, source || "en", "en");
+          }}
+        />
+        {downloading && <Text>Downloading Model...</Text>}
+      </View>
+    </View>
+  );
+}
+```
