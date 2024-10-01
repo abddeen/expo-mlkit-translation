@@ -2,53 +2,79 @@ package expo.modules.mlkittranslation
 
 import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
-import expo.modules.kotlin.records.Field
-import expo.modules.kotlin.records.Record
-
+import expo.modules.kotlin.Promise
+import com.google.mlkit.nl.languageid.LanguageIdentification
+import com.google.mlkit.common.model.RemoteModelManager
+import com.google.mlkit.nl.translate.TranslateRemoteModel
+import expo.modules.kotlin.exception.toCodedException
+import android.util.Log
+import com.google.mlkit.nl.translate.TranslateLanguage
+import com.google.mlkit.nl.translate.Translation
+import com.google.mlkit.nl.translate.TranslatorOptions
 class ExpoMlkitTranslationModule : Module() {
-  // Each module class must implement the definition function. The definition consists of components
-  // that describes the module's functionality and behavior.
-  // See https://docs.expo.dev/modules/module-api for more details about available components.
   override fun definition() = ModuleDefinition {
-    // Sets the name of the module that JavaScript code will use to refer to the module. Takes a string as an argument.
-    // Can be inferred from module's class name, but it's recommended to set it explicitly for clarity.
-    // The module will be accessible from `requireNativeModule('ExpoMlkit')` in JavaScript.
     Name("ExpoMlkitTranslation")
-
-    // Defines event names that the module can send to JavaScript.
-    Events("onChange")
 
     AsyncFunction("identifyLanguage") { text: String, promise: Promise ->
       val languageIdentifier = LanguageIdentification.getClient()
-      languageIdentifier.identifyLanguage(text)
-              .addOnSuccessListener { languageCode ->
-                promise.resolve(languageCode)
-              }
-              .addOnFailureListener {
-                  promise.reject(it)
-              }
+      languageIdentifier.identifyLanguage(text).addOnSuccessListener { languageCode ->
+        if (languageCode == "und") {
+          promise.resolve(null)
+          return@addOnSuccessListener
+        }
+        promise.resolve(languageCode)
+      }.addOnFailureListener {
+        promise.reject(it.toCodedException())
+      }
     }
 
-    // Defines a JavaScript synchronous function that runs the native code on the JavaScript thread.
-    AsyncFunction("translate") { text: String ->
-      // TODO translate
-      return@AsyncFunction "Hello world! 👋"
+    AsyncFunction("translate") { text: String, source: String, target: String, promise: Promise ->
+      val sourceLangCode = TranslateLanguage.fromLanguageTag(source)!!
+      val targetLangCode = TranslateLanguage.fromLanguageTag(target)!!
+        val options = TranslatorOptions.Builder()
+            .setSourceLanguage(sourceLangCode)
+            .setTargetLanguage(targetLangCode)
+            .build()
+        val translator = Translation.getClient(options)
+        translator.downloadModelIfNeeded()
+          .addOnSuccessListener {
+              translator.translate(text)
+                .addOnSuccessListener { translatedText ->
+                    promise.resolve(translatedText)
+                }
+                .addOnFailureListener { exception ->
+                    promise.reject(exception.toCodedException())
+                }
+          }
+          .addOnFailureListener { exception ->
+              promise.reject(exception.toCodedException())
+          }
     }
 
-    // Defines a JavaScript synchronous function that runs the native code on the JavaScript thread.
-    AsyncFunction("prepare") { options: PrepareOptions ->
-      // TODO prepare
-      return@AsyncFunction "Prepared"
+    AsyncFunction("getDownloadedModels") { promise: Promise ->
+      val modelManager = RemoteModelManager.getInstance()
+
+      // Get translation models stored on the device.
+      modelManager.getDownloadedModels(TranslateRemoteModel::class.java)
+          .addOnSuccessListener { models ->
+              promise.resolve(models.map { it.language })
+          }
+          .addOnFailureListener {
+              promise.reject(it.toCodedException())
+          }
+    }
+
+    AsyncFunction("hasDownloadedModel") { language: String, promise: Promise ->
+      val modelManager = RemoteModelManager.getInstance()
+      // Get translation models stored on the device.
+      modelManager.getDownloadedModels(TranslateRemoteModel::class.java)
+          .addOnSuccessListener { models ->
+              val hasModel = models.any { it.language == language }
+              promise.resolve(hasModel)
+          }
+          .addOnFailureListener {
+              promise.reject(it.toCodedException())
+          }
     }
   }
 }
- class PrepareOptions : Record {
-   @Field
-   val source: String = "utf8"
-
-   @Field
-   val target: String = "utf8"
-
-   @Field
-   val downloadIfNeeded: Boolean = false
- }

@@ -7,8 +7,8 @@ export interface ExpoMlkitTranslationModuleType extends NativeModule {
     source: LanguageTagType,
     target: LanguageTagType
   ) => Promise<string>;
-  downloadedTranslateModels: () => string[];
-  hasDownloadedTranslateModel: (language: LanguageTagType) => boolean;
+  getDownloadedModels: () => Promise<string[]>;
+  hasDownloadedModel: (language: LanguageTagType) => Promise<boolean>;
   setValueAsync: (value: string) => Promise<void>;
 }
 export type ChangeEventPayload = {

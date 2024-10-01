@@ -18,7 +18,9 @@ export default function App() {
     target: LanguageTagType
   ) => {
     try {
-      if (!ExpoMlkitTranslationModule.hasDownloadedTranslateModel(source)) {
+      const hasModel =
+        await ExpoMlkitTranslationModule.hasDownloadedModel(source);
+      if (!hasModel) {
         setDownloading(true);
       }
       const translation = await ExpoMlkitTranslationModule.translate(
@@ -40,10 +42,7 @@ export default function App() {
           title="Detect Language"
           onPress={async () => {
             const identifiedLanguage = await detectLanguage(value);
-            Alert.alert(
-              "Identified Language",
-              identifiedLanguage || "Undetermined"
-            );
+            Alert.alert("Identified Language", identifiedLanguage || "null");
           }}
         />
         <Button
@@ -77,7 +76,7 @@ function HasDownloadedModels() {
         onPress={async () => {
           if (!selectedLanguage) return;
           const hasModel =
-            ExpoMlkitTranslationModule.hasDownloadedTranslateModel(
+            await ExpoMlkitTranslationModule.hasDownloadedModel(
               selectedLanguage
             );
           Alert.alert("Has Model", hasModel.toString());
@@ -94,7 +93,7 @@ function DownloadedModels() {
         title="Get Downloaded Models"
         onPress={async () => {
           const _downloadedModels =
-            await ExpoMlkitTranslationModule.downloadedTranslateModels();
+            await ExpoMlkitTranslationModule.getDownloadedModels();
           setDownloadedModels(_downloadedModels);
         }}
       />
@@ -113,7 +112,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 150,
+    paddingVertical: 50,
   },
   block: {
     flex: 1,

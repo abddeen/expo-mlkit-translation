@@ -19,10 +19,10 @@ const ExpoMlkitTranslationWebModule: ExpoMlkitTranslationModuleType = {
   async translate(text: string) {
     return "TODO";
   },
-  downloadedTranslateModels() {
+  async getDownloadedModels() {
     return [];
   },
-  hasDownloadedTranslateModel(language: LanguageTagType) {
+  async hasDownloadedModel(language: LanguageTagType) {
     return false;
   },
 };

@@ -3,17 +3,8 @@ import MLKitTranslate
 import MLKitLanguageID
 
 public class ExpoMlkitTranslationModule: Module {
-    // Each module class must implement the definition function. The definition consists of components
-    // that describes the module's functionality and behavior.
-    // See https://docs.expo.dev/modules/module-api for more details about available components.
     public func definition() -> ModuleDefinition {
-        // Sets the name of the module that JavaScript code will use to refer to the module. Takes a string as an argument.
-        // Can be inferred from module's class name, but it's recommended to set it explicitly for clarity.
-        // The module will be accessible from `requireNativeModule('ExpoMlkitTranslation')` in JavaScript.
         Name("ExpoMlkitTranslation")
-        
-        // Defines event names that the module can send to JavaScript.
-        Events("onChange")
         
         AsyncFunction("identifyLanguage") {  (text: String, promise: Promise) in
             let languageId = LanguageIdentification.languageIdentification()
@@ -23,13 +14,16 @@ public class ExpoMlkitTranslationModule: Module {
                     print("Failed with error: \(error)")
                     return
                 }
+                // If und, return nil
+                if languageCode == "und" {
+                    promise.resolve(nil)
+                    return
+                }
                 promise.resolve(languageCode)
             }
         }
         
         AsyncFunction("translate") {  (text: String, source: String, target: String, promise:Promise ) in
-            print("source: \(source), target: \(target)")
-            
             guard
                 let sourceLanguage = TranslateLanguage.fromTag(source),
                 let targetLanguage = TranslateLanguage.fromTag(target)
@@ -37,9 +31,7 @@ public class ExpoMlkitTranslationModule: Module {
                 promise.reject(NSError(domain: "", code: 400, userInfo: [NSLocalizedDescriptionKey: "Invalid language provided, source: \(source), target: \(target)"]))
                 return
             }
-            
-            print("sourceLanguage: \(sourceLanguage), \(targetLanguage)")
-            
+
             let translatorOptions = TranslatorOptions(sourceLanguage: sourceLanguage, targetLanguage: targetLanguage)
             let translator = Translator.translator(options: translatorOptions)
             
@@ -60,14 +52,12 @@ public class ExpoMlkitTranslationModule: Module {
             }
         }
         
-        Function("downloadedTranslateModels") {
-            let modelsTags = ModelManager.modelManager().downloadedTranslateModels.map{ $0.language.rawValue }
-            print("models: \(modelsTags)")
-            return modelsTags
+        AsyncFunction("getDownloadedModels") {
+            return ModelManager.modelManager().downloadedTranslateModels.map{ $0.language.rawValue }
         }
         
         
-        Function("hasDownloadedTranslateModel") { (language: String) in
+        AsyncFunction("hasDownloadedModel") { (language: String) in
             let modelsTags = ModelManager.modelManager().downloadedTranslateModels.map{ $0.language.rawValue }
             
             guard let languageTag = TranslateLanguage.fromTag(language) else {
@@ -75,15 +65,6 @@ public class ExpoMlkitTranslationModule: Module {
             }
             
             return modelsTags.contains(language)
-        }
-        
-        // Defines a JavaScript function that always returns a Promise and whose native code
-        // is by default dispatched on the different thread than the JavaScript runtime runs on.
-        AsyncFunction("setValueAsync") { (value: String) in
-            // Send an event to JavaScript.
-            self.sendEvent("onChange", [
-                "value": value
-            ])
         }
     }
 }
