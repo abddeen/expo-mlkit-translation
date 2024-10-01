@@ -1,6 +1,6 @@
 # expo-mlkit-translation
 
-Wrapper for Google MLKit Translation
+Expo Module Wrapper for Google MLKit Translation
 
 ## Installation
 
