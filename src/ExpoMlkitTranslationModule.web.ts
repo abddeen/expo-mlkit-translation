@@ -1,9 +1,6 @@
 import { EventEmitter } from "expo-modules-core";
 
-import {
-  ExpoMlkitTranslationModuleType,
-  PrepareOptions,
-} from "./ExpoMlkitTranslation.types";
+import { ExpoMlkitTranslationModuleType } from "./ExpoMlkitTranslation.types";
 
 const emitter = new EventEmitter({} as any);
 
@@ -17,10 +14,7 @@ const ExpoMlkitTranslationWebModule: ExpoMlkitTranslationModuleType = {
   addListener() {},
   removeListeners() {},
   async translate(text: string) {
-    return "Hello Web! 👋";
-  },
-  async prepare(options: PrepareOptions) {
-    return "Prepared";
+    return "TODO";
   },
 };
 
