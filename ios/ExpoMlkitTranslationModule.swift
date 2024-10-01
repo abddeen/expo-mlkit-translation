@@ -60,6 +60,23 @@ public class ExpoMlkitTranslationModule: Module {
             }
         }
         
+        Function("downloadedTranslateModels") {
+            let modelsTags = ModelManager.modelManager().downloadedTranslateModels.map{ $0.language.rawValue }
+            print("models: \(modelsTags)")
+            return modelsTags
+        }
+        
+        
+        Function("hasDownloadedTranslateModel") { (language: String) in
+            let modelsTags = ModelManager.modelManager().downloadedTranslateModels.map{ $0.language.rawValue }
+            
+            guard let languageTag = TranslateLanguage.fromTag(language) else {
+                return false
+            }
+            
+            return modelsTags.contains(language)
+        }
+        
         // Defines a JavaScript function that always returns a Promise and whose native code
         // is by default dispatched on the different thread than the JavaScript runtime runs on.
         AsyncFunction("setValueAsync") { (value: String) in
@@ -73,22 +90,6 @@ public class ExpoMlkitTranslationModule: Module {
 
 extension TranslateLanguage {
     static func fromTag(_ code: String) -> TranslateLanguage? {
-        let allLanguages = TranslateLanguage.allLanguages()
-        
-        // Print out all the raw values of the languages
-        let rawValues = allLanguages.map { $0.rawValue }
-        print("Available Languages Raw Values: \(rawValues)")
-        
-        // Print out the provided code
-        print("Provided Code: \(code)")
-        
-        // Find the matching language by comparing the raw value
-        let result = allLanguages.first { $0.rawValue == code }
-        
-        // Print out the provided code
-        print("Found Code: \(code)")
-        
-        return result
-        
+        return TranslateLanguage.allLanguages().first { $0.rawValue == code }
     }
 }
